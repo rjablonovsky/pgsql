@@ -1,15 +1,15 @@
 # run: sudo su - postgres
 # screen
-# psql -c '\timing' --echo-all -f extract-pg13waretest-combined_well-to_csv.sql -U postgres -d pg13waretest > extract-pg13waretest-combined_well-to_csv.log 2>&1
+# psql -c '\timing' --echo-all -f extract-db1-schema11-to_csv.sql -U postgres -d db1 > extract-db1-schema1-to_csv.log 2>&1
 # ./extract_schema.sh
 
 SCRIPT_FILE="$(realpath $0)"
 SCRIPT_PATH="$(dirname ${SCRIPT_FILE})"
 TIMESTAMP='date +%Y%m%d_%H%M%S.%N'
 
-DB_SCHEMA="${1:-combined_well}"
-CSV_PATH="${2:-/pg/s3nfs/pg13-ware-test/loader}"
-DB_NAME="${3:-pg13waretest}"
+DB_SCHEMA="${1:-schema1}"
+CSV_PATH="${2:-/pg/s3nfs/db1/loader}"
+DB_NAME="${3:-db1}"
 DB_USER="${4:-postgres}"
 DB_HOST="${5:-}"
 if [[ ! -z "${DB_HOST// /}" ]]; then DB_HOST="-h ${DB_HOST}"; fi 
@@ -32,7 +32,7 @@ order by relkind, relname;
 EOF
 
 echo "$($TIMESTAMP), START extract schema: $SCRIPT_FILE" | tee -a ${LOG}
-psql -c '\timing' --echo-all -f "${SQLFILE}" -U postgres -d pg13waretest >> "${LOG}" 2>&1
+psql -c '\timing' --echo-all -f "${SQLFILE}" -U postgres -d db1 >> "${LOG}" 2>&1
 echo "$($TIMESTAMP), END extract schema: $SCRIPT_FILE" | tee -a ${LOG}
 # get first 10 error messages from the log
 ERROR_MSG="$(grep -A 2 -B 2 -i -e error -e fail ${LOG} | head)"
