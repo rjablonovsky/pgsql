@@ -6,8 +6,7 @@
 # OR
 # * * * * * /home/postgres/log_pgsql_memory_usage.sh "/pg/db"
 #
-# needed by JIRA: http://jira.corp.gljpc.com:8080/browse/ITP-6635
-#
+#set -x # debuging
 
 HOME_DIR=/home/postgres
 PG_TOP="/usr/bin/pg_top"
